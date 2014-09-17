@@ -20,14 +20,13 @@ import net.hydromatic.linq4j.*;
 import net.hydromatic.linq4j.expressions.*;
 import net.hydromatic.linq4j.expressions.Types;
 import net.hydromatic.linq4j.function.*;
-
 import net.hydromatic.optiq.SchemaPlus;
+import net.hydromatic.optiq.exec.func.TableMacroImpl;
 import net.hydromatic.optiq.impl.*;
 import net.hydromatic.optiq.impl.java.*;
 import net.hydromatic.optiq.jdbc.OptiqConnection;
 
 import org.eigenbase.util14.DateTimeUtil;
-
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -38,7 +37,6 @@ import java.util.*;
 import java.util.Date;
 
 import static net.hydromatic.optiq.test.JdbcTest.Employee;
-
 import static org.junit.Assert.*;
 
 /**

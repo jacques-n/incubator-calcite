@@ -28,10 +28,11 @@ import org.eigenbase.sql.type.SqlTypeName;
 import org.eigenbase.util.NlsString;
 
 import net.hydromatic.linq4j.QueryProvider;
-
 import net.hydromatic.optiq.DataContext;
 import net.hydromatic.optiq.SchemaPlus;
 import net.hydromatic.optiq.Schemas;
+import net.hydromatic.optiq.exec.rex.RexExecutable;
+import net.hydromatic.optiq.exec.rex.RexExecutorImpl;
 import net.hydromatic.optiq.impl.java.JavaTypeFactory;
 import net.hydromatic.optiq.server.OptiqServerStatement;
 import net.hydromatic.optiq.tools.Frameworks;
@@ -47,7 +48,7 @@ import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 /**
- * Unit test for {@link org.eigenbase.rex.RexExecutorImpl}.
+ * Unit test for {@link net.hydromatic.optiq.exec.rex.RexExecutorImpl}.
  */
 public class RexExecutorTest {
   public RexExecutorTest() {
@@ -154,7 +155,7 @@ public class RexExecutorTest {
 
   /** Callback for {@link #check}. Test code will typically use {@code builder}
    * to create some expressions, call
-   * {@link org.eigenbase.rex.RexExecutorImpl#reduce} to evaluate them into
+   * {@link net.hydromatic.optiq.exec.rex.RexExecutorImpl#reduce} to evaluate them into
    * a list, then check that the results are as expected. */
   interface Action {
     void check(RexBuilder rexBuilder, RexExecutorImpl executor);

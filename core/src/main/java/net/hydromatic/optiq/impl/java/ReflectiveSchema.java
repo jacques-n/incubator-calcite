@@ -18,9 +18,9 @@ package net.hydromatic.optiq.impl.java;
 
 import net.hydromatic.linq4j.*;
 import net.hydromatic.linq4j.expressions.*;
-
 import net.hydromatic.optiq.*;
 import net.hydromatic.optiq.Table;
+import net.hydromatic.optiq.exec.func.ReflectiveFunctionBase;
 import net.hydromatic.optiq.impl.*;
 
 import org.eigenbase.reltype.RelDataType;

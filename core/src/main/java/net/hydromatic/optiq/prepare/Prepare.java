@@ -17,6 +17,7 @@
 package net.hydromatic.optiq.prepare;
 
 import net.hydromatic.optiq.DataContext;
+import net.hydromatic.optiq.exec.rex.RexExecutorImpl;
 import net.hydromatic.optiq.impl.StarTable;
 import net.hydromatic.optiq.impl.java.JavaTypeFactory;
 import net.hydromatic.optiq.jdbc.OptiqPrepare;
@@ -31,7 +32,6 @@ import org.eigenbase.rel.*;
 import org.eigenbase.relopt.*;
 import org.eigenbase.reltype.RelDataType;
 import org.eigenbase.rex.RexBuilder;
-import org.eigenbase.rex.RexExecutorImpl;
 import org.eigenbase.sql.*;
 import org.eigenbase.sql.validate.*;
 import org.eigenbase.sql2rel.SqlToRelConverter;

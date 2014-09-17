@@ -17,6 +17,10 @@
 package net.hydromatic.optiq.model;
 
 import net.hydromatic.optiq.*;
+import net.hydromatic.optiq.exec.func.AggregateFunctionImpl;
+import net.hydromatic.optiq.exec.func.ScalarFunctionImpl;
+import net.hydromatic.optiq.exec.func.TableFunctionImpl;
+import net.hydromatic.optiq.exec.func.TableMacroImpl;
 import net.hydromatic.optiq.impl.*;
 import net.hydromatic.optiq.impl.jdbc.JdbcSchema;
 import net.hydromatic.optiq.jdbc.OptiqConnection;
@@ -28,13 +32,13 @@ import org.eigenbase.util.Util;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import com.google.common.collect.ImmutableList;
 
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.*;
+
 import javax.sql.DataSource;
 
 import static org.eigenbase.util.Stacks.*;

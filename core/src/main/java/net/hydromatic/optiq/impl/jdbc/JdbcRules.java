@@ -19,8 +19,8 @@ package net.hydromatic.optiq.impl.jdbc;
 import net.hydromatic.linq4j.Ord;
 import net.hydromatic.linq4j.Queryable;
 import net.hydromatic.linq4j.expressions.*;
-
 import net.hydromatic.optiq.ModifiableTable;
+import net.hydromatic.optiq.exec.jdbc.JdbcToEnumerableConverterRule;
 import net.hydromatic.optiq.prepare.Prepare;
 import net.hydromatic.optiq.util.BitSets;
 

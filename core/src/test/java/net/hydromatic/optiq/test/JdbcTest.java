@@ -17,13 +17,13 @@
 package net.hydromatic.optiq.test;
 
 import net.hydromatic.avatica.*;
-
 import net.hydromatic.linq4j.*;
 import net.hydromatic.linq4j.expressions.Types;
 import net.hydromatic.linq4j.function.Function1;
 import net.hydromatic.linq4j.function.Function2;
-
 import net.hydromatic.optiq.*;
+import net.hydromatic.optiq.exec.func.TableFunctionImpl;
+import net.hydromatic.optiq.exec.func.TableMacroImpl;
 import net.hydromatic.optiq.impl.*;
 import net.hydromatic.optiq.impl.clone.CloneSchema;
 import net.hydromatic.optiq.impl.generate.RangeTable;
@@ -69,8 +69,8 @@ import java.math.BigDecimal;
 import java.net.URL;
 import java.sql.*;
 import java.sql.Date;
-import java.sql.Statement;
 import java.util.*;
+
 import javax.sql.DataSource;
 
 import static org.hamcrest.CoreMatchers.*;
