@@ -111,6 +111,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeSet;
 
 import static org.apache.calcite.sql.SqlUtil.stripAs;
 import static org.apache.calcite.util.Static.RESOURCE;
@@ -334,7 +335,9 @@ public class SqlValidatorImpl implements SqlValidatorWithHints {
           selectItem,
           select,
           list,
-          new LinkedHashSet<String>(),
+          catalogReader.isCaseSensitive()
+          ? new LinkedHashSet<String>()
+              : new TreeSet<String>(String.CASE_INSENSITIVE_ORDER),
           types,
           includeSystemVars);
     }
