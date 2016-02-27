@@ -236,7 +236,7 @@ public class Pair<T1, T2>
           }
 
           public Pair<K, V> next() {
-            return Pair.of(kIterator.next(), vIterator.next());
+            return (Pair<K, V>) Pair.of(kIterator.next(), vIterator.next());
           }
 
           public void remove() {

@@ -142,7 +142,7 @@ public class SqlNodeToRexConverterImpl implements SqlNodeToRexConverter {
     case INTERVAL_DAY_TIME:
       SqlIntervalQualifier sqlIntervalQualifier =
           ((SqlIntervalLiteral.IntervalValue) value).getIntervalQualifier();
-      l = (long) SqlLiteral.value(literal);
+      l = (long) (Long) SqlLiteral.value(literal);
       return rexBuilder.makeIntervalLiteral(
           BigDecimal.valueOf(l),
           sqlIntervalQualifier);
