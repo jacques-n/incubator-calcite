@@ -1332,13 +1332,14 @@ public class JdbcTest {
             + "and p.\"brand_name\" = 'Washington'")
         .explainMatches("including all attributes ",
             CalciteAssert.checkMaskedResultContains(""
-                + "EnumerableJoin(condition=[=($0, $38)], joinType=[inner]): rowcount = 7.050660528307499E8, cumulative cost = {1.0640240216183146E9 rows, 777302.0 cpu, 0.0 io}\n"
-                + "  EnumerableJoin(condition=[=($2, $8)], joinType=[inner]): rowcount = 2.0087351932499997E7, cumulative cost = {2.117504719375143E7 rows, 724261.0 cpu, 0.0 io}\n"
-                + "    EnumerableTableScan(table=[[foodmart2, sales_fact_1997]]): rowcount = 86837.0, cumulative cost = {86837.0 rows, 86838.0 cpu, 0.0 io}\n"
-                + "    EnumerableCalc(expr#0..28=[{inputs}], expr#29=['San Francisco'], expr#30=[=($t9, $t29)], proj#0..28=[{exprs}], $condition=[$t30]): rowcount = 1542.1499999999999, cumulative cost = {11823.15 rows, 637423.0 cpu, 0.0 io}\n"
-                + "      EnumerableTableScan(table=[[foodmart2, customer]]): rowcount = 10281.0, cumulative cost = {10281.0 rows, 10282.0 cpu, 0.0 io}\n"
+                + "EnumerableMergeJoin(condition=[=($0, $38)], joinType=[inner]): rowcount = 7.050660528307499E8, cumulative cost = {7.655269545978069E8 rows, 1.4872413450049999E9 cpu, 0.0 io}\n"
+                + "  EnumerableCalc(expr#0..36=[{inputs}], product_id=[$t29], time_id=[$t30], customer_id=[$t31], promotion_id=[$t32], store_id=[$t33], store_sales=[$t34], store_cost=[$t35], unit_sales=[$t36], customer_id0=[$t0], account_num=[$t1], lname=[$t2], fname=[$t3], mi=[$t4], address1=[$t5], address2=[$t6], address3=[$t7], address4=[$t8], city=[$t9], state_province=[$t10], postal_code=[$t11], country=[$t12], customer_region_id=[$t13], phone1=[$t14], phone2=[$t15], birthdate=[$t16], marital_status=[$t17], yearly_income=[$t18], gender=[$t19], total_children=[$t20], num_children_at_home=[$t21], education=[$t22], date_accnt_opened=[$t23], member_card=[$t24], occupation=[$t25], houseowner=[$t26], num_cars_owned=[$t27], fullname=[$t28]): rowcount = 2.0087351932499997E7, cumulative cost = {4.037152183455708E7 rows, 1.4871883040049999E9 cpu, 0.0 io}\n"
+                + "    EnumerableJoin(condition=[=($0, $31)], joinType=[inner]): rowcount = 2.0087351932499997E7, cumulative cost = {2.028416990205708E7 rows, 724261.0 cpu, 0.0 io}\n"
+                + "      EnumerableCalc(expr#0..28=[{inputs}], expr#29=['San Francisco'], expr#30=[=($t9, $t29)], proj#0..28=[{exprs}], $condition=[$t30]): rowcount = 1542.1499999999999, cumulative cost = {11823.15 rows, 637423.0 cpu, 0.0 io}\n"
+                + "        EnumerableTableScan(table=[[foodmart2, customer]]): rowcount = 10281.0, cumulative cost = {10281.0 rows, 10282.0 cpu, 0.0 io}\n"
+                + "      EnumerableTableScan(table=[[foodmart2, sales_fact_1997]]): rowcount = 86837.0, cumulative cost = {86837.0 rows, 86838.0 cpu, 0.0 io}\n"
                 + "  EnumerableCalc(expr#0..14=[{inputs}], expr#15=['Washington'], expr#16=[=($t2, $t15)], proj#0..14=[{exprs}], $condition=[$t16]): rowcount = 234.0, cumulative cost = {1794.0 rows, 53041.0 cpu, 0.0 io}\n"
-                + "    EnumerableTableScan(table=[[foodmart2, product]]): rowcount = 1560.0, cumulative cost = {1560.0 rows, 1561.0 cpu, 0.0 io}\n"));
+                + "    EnumerableTableScan(table=[[foodmart2, product]]): rowcount = 1560.0, cumulative cost = {1560.0 rows, 1561.0 cpu, 0.0 io}"));
   }
 
   /** Tests a query whose best plan is a bushy join.
@@ -1934,6 +1935,7 @@ public class JdbcTest {
     //   12    36
     //   13   116 - OOM did not complete
     checkJoinNWay(1);
+    checkJoinNWay(3);
     checkJoinNWay(6);
   }
 

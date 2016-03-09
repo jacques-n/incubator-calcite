@@ -44,11 +44,10 @@ import static org.apache.calcite.plan.volcano.VolcanoPlannerTest.newCluster;
 
 import static org.junit.Assert.assertTrue;
 
-
-/** Tests a combo rule that propagates an IntermediateNode up to the root from the leaf */
+/**
+ * Unit test for {@link VolcanoPlanner}
+ */
 public class ComboRuleTest {
-
-  /** test */
   @Test
   public void testCombo() {
     VolcanoPlanner planner = new VolcanoPlanner();
@@ -80,7 +79,10 @@ public class ComboRuleTest {
     assertTrue(result instanceof IntermediateNode);
   }
 
-  /** Intermediate node, the cost decreases as it is pushed up the tree */
+  /**
+   * Intermediate node, the cost decreases as it is pushed up the tree
+   * (more children it has, cheaper it gets)
+   */
   private static class IntermediateNode extends TestSingleRel {
 
     private final int numNodesBelow;
@@ -92,7 +94,6 @@ public class ComboRuleTest {
 
     public int getNumNodesBelow() { return numNodesBelow; }
 
-    // implement RelNode
     public RelOptCost computeSelfCost(RelOptPlanner planner,
                                       RelMetadataQuery mq) {
       return planner.getCostFactory().makeCost(100, 100, 100).multiplyBy(1.0 / numNodesBelow);
@@ -104,18 +105,18 @@ public class ComboRuleTest {
     }
   }
 
-  /** Adds an intermediate node above the PhysLeafRel */
+  /**
+   * Rule that adds an intermediate node above the PhysLeafRel
+   */
   private static class AddIntermediateNodeRule extends RelOptRule {
     AddIntermediateNodeRule() {
       super(operand(NoneLeafRel.class, any()));
     }
 
-    // implement RelOptRule
     public Convention getOutConvention() {
       return PHYS_CALLING_CONVENTION;
     }
 
-    // implement RelOptRule
     public void onMatch(RelOptRuleCall call) {
       NoneLeafRel leaf = call.rel(0);
 
@@ -126,7 +127,9 @@ public class ComboRuleTest {
     }
   }
 
-  /** Matches PhysSingleRel-IntermediateNode-Any and converts to Intermediate-PhysSingleRel-Any */
+  /**
+   * Matches PhysSingleRel-IntermediateNode-Any and converts to Intermediate-PhysSingleRel-Any
+   */
   private static class ComboRule extends RelOptRule {
     ComboRule() {
       super(createOperand());
@@ -139,7 +142,6 @@ public class ComboRuleTest {
       return input;
     }
 
-    // implement RelOptRule
     public Convention getOutConvention() {
       return PHYS_CALLING_CONVENTION;
     }

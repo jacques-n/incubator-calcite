@@ -569,11 +569,12 @@ from "sales_fact_1997" as s
   join "customer" as c using ("customer_id")
   join "product" as p using ("product_id")
 where c."city" = 'San Francisco';
-EnumerableJoin(condition=[=($0, $38)], joinType=[inner])
-  EnumerableJoin(condition=[=($2, $8)], joinType=[inner])
-    EnumerableTableScan(table=[[foodmart2, sales_fact_1997]])
-    EnumerableCalc(expr#0..28=[{inputs}], expr#29=['San Francisco'], expr#30=[=($t9, $t29)], proj#0..28=[{exprs}], $condition=[$t30])
-      EnumerableTableScan(table=[[foodmart2, customer]])
+EnumerableMergeJoin(condition=[=($0, $38)], joinType=[inner])
+  EnumerableCalc(expr#0..36=[{inputs}], product_id=[$t29], time_id=[$t30], customer_id=[$t31], promotion_id=[$t32], store_id=[$t33], store_sales=[$t34], store_cost=[$t35], unit_sales=[$t36], customer_id0=[$t0], account_num=[$t1], lname=[$t2], fname=[$t3], mi=[$t4], address1=[$t5], address2=[$t6], address3=[$t7], address4=[$t8], city=[$t9], state_province=[$t10], postal_code=[$t11], country=[$t12], customer_region_id=[$t13], phone1=[$t14], phone2=[$t15], birthdate=[$t16], marital_status=[$t17], yearly_income=[$t18], gender=[$t19], total_children=[$t20], num_children_at_home=[$t21], education=[$t22], date_accnt_opened=[$t23], member_card=[$t24], occupation=[$t25], houseowner=[$t26], num_cars_owned=[$t27], fullname=[$t28])
+    EnumerableJoin(condition=[=($0, $31)], joinType=[inner])
+      EnumerableCalc(expr#0..28=[{inputs}], expr#29=['San Francisco'], expr#30=[=($t9, $t29)], proj#0..28=[{exprs}], $condition=[$t30])
+        EnumerableTableScan(table=[[foodmart2, customer]])
+      EnumerableTableScan(table=[[foodmart2, sales_fact_1997]])
   EnumerableTableScan(table=[[foodmart2, product]])
 !plan
 

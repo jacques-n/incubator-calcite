@@ -21,6 +21,8 @@ import org.apache.calcite.jdbc.CalciteRemoteDriverTest;
 import org.apache.calcite.plan.RelOptPlanReaderTest;
 import org.apache.calcite.plan.RelOptUtilTest;
 import org.apache.calcite.plan.RelWriterTest;
+import org.apache.calcite.plan.volcano.CollationConversionTest;
+import org.apache.calcite.plan.volcano.TraitConversionTest;
 import org.apache.calcite.plan.volcano.TraitPropagationTest;
 import org.apache.calcite.plan.volcano.VolcanoPlannerTest;
 import org.apache.calcite.plan.volcano.VolcanoPlannerTraitTest;
@@ -92,6 +94,8 @@ import org.junit.runners.Suite;
     ExceptionMessageTest.class,
     InduceGroupingTypeTest.class,
     RelOptPlanReaderTest.class,
+    CollationConversionTest.class,
+    TraitConversionTest.class,
 
     // medium tests (above 0.1s)
     SqlParserTest.class,
