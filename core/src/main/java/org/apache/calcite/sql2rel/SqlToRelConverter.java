@@ -4942,8 +4942,10 @@ public class SqlToRelConverter {
 
         return histogramCall;
       } else {
-        boolean needSum0 = aggOp == SqlStdOperatorTable.SUM
-            && type.isNullable();
+// Disabled until CALCITE-777 is fixed.
+//        boolean needSum0 = aggOp == SqlStdOperatorTable.SUM
+//            && type.isNullable();
+        boolean needSum0 = false;
         SqlAggFunction aggOpToUse =
             needSum0 ? SqlStdOperatorTable.SUM0
                 : aggOp;
