@@ -122,6 +122,7 @@ public abstract class ReturnTypes {
         }
       };
 
+
   /**
    * Type-inference strategy whereby the result type of a call is the type of
    * the operand #0 (0-based), with nulls always allowed.
@@ -430,6 +431,23 @@ public abstract class ReturnTypes {
       cascade(DECIMAL_PRODUCT, SqlTypeTransforms.TO_NULLABLE);
 
   /**
+   * Type-inference strategy for a call where if any of the arguments is
+   * of type ANY, then the result is of type ANY.
+   */
+  public static final SqlReturnTypeInference ARG_IS_ANY =
+    new SqlReturnTypeInference() {
+      public RelDataType inferReturnType(
+          SqlOperatorBinding opBinding) {
+        for (RelDataType type : opBinding.collectOperandTypes()) {
+          if (SqlTypeUtil.isAny(type)) {
+            return type;
+          }
+        }
+        return null;
+      }
+    };
+
+  /**
    * Type-inference strategy whereby the result type of a call is
    * {@link #DECIMAL_PRODUCT_NULLABLE} with a fallback to
    * {@link #ARG0_INTERVAL_NULLABLE}
@@ -437,7 +455,7 @@ public abstract class ReturnTypes {
    * These rules are used for multiplication.
    */
   public static final SqlReturnTypeInference PRODUCT_NULLABLE =
-      chain(DECIMAL_PRODUCT_NULLABLE, ARG0_INTERVAL_NULLABLE,
+      chain(ARG_IS_ANY, DECIMAL_PRODUCT_NULLABLE, ARG0_INTERVAL_NULLABLE,
           LEAST_RESTRICTIVE);
 
   /**
@@ -470,7 +488,7 @@ public abstract class ReturnTypes {
    * are used for division.
    */
   public static final SqlReturnTypeInference QUOTIENT_NULLABLE =
-      chain(
+      chain(ARG_IS_ANY,
           DECIMAL_QUOTIENT_NULLABLE, ARG0_INTERVAL_NULLABLE, LEAST_RESTRICTIVE);
   /**
    * Type-inference strategy whereby the result type of a call is the decimal
@@ -539,7 +557,7 @@ public abstract class ReturnTypes {
    * These rules are used for addition and subtraction.
    */
   public static final SqlReturnTypeInference NULLABLE_SUM =
-      new SqlReturnTypeInferenceChain(DECIMAL_SUM_NULLABLE, LEAST_RESTRICTIVE);
+      new SqlReturnTypeInferenceChain(ARG_IS_ANY, DECIMAL_SUM_NULLABLE, LEAST_RESTRICTIVE);
 
   /**
    * Type-inference strategy whereby the result type of a call is
@@ -782,6 +800,9 @@ public abstract class ReturnTypes {
               .deriveSumType(typeFactory, opBinding.getOperandType(0));
         }
       };
+
+
+
 }
 
 // End ReturnTypes.java
