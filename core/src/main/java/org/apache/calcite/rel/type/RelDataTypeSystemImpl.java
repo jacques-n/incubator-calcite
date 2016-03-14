@@ -167,6 +167,12 @@ public abstract class RelDataTypeSystemImpl implements RelDataTypeSystem {
     return argumentType;
   }
 
+  @Override public RelDataType deriveAvgType(
+      RelDataTypeFactory typeFactory, RelDataType argumentType) {
+    return argumentType;
+  }
+
+
   @Override public boolean isSchemaCaseSensitive() {
     return true;
   }
