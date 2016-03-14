@@ -700,13 +700,6 @@ public class SqlValidatorUtil {
     }
 
     public SqlNode visit(SqlIdentifier id) {
-      // First check for builtin functions which don't have parentheses,
-      // like "LOCALTIME".
-      final SqlCall call = SqlUtil.makeCall(getScope().getValidator().getOperatorTable(), id);
-      if (call != null) {
-        return call;
-      }
-
       return getScope().fullyQualify(id).identifier;
     }
 
@@ -739,6 +732,13 @@ public class SqlValidatorUtil {
 
     @Override
     public SqlNode visit(SqlIdentifier id) {
+      // First check for builtin functions which don't have parentheses,
+      // like "LOCALTIME".
+      final SqlCall call = SqlUtil.makeCall(getScope().getValidator().getOperatorTable(), id);
+      if (call != null) {
+        return call;
+      }
+
       SqlIdentifier fqId = getScope().fullyQualify(id).identifier;
       if (Util.last(fqId.names).equals("")
           && !Util.last(id.names).equals("")) {
