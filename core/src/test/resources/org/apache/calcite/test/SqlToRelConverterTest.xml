@@ -3273,4 +3273,22 @@ LogicalProject(EMPNO=[$0], ENAME=[$1], JOB=[$2], MGR=[$3], HIREDATE=[$4], SAL=[$
 ]]>
         </Resource>
     </TestCase>
+        <TestCase name="testWindowSumAggIsNotNull">
+        <Resource name="sql">
+            <![CDATA[select w_sum
+             from (select sum (mgr) over (
+             partition by deptno order by deptno asc nulls first) w_sum
+             from emp)
+             where w_sum is not null]]>
+        </Resource>
+        <Resource name="plan">
+            <![CDATA[
+LogicalProject(W_SUM=[$0])
+  LogicalFilter(condition=[IS NOT NULL($0)])
+    LogicalProject(W_SUM=[CASE(>(COUNT($3) OVER (PARTITION BY $7 ORDER BY $7 NULLS FIRST RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW), 0), CAST($SUM0($3) OVER (PARTITION BY $7 ORDER BY $7 NULLS FIRST RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW)):INTEGER, null)])
+      LogicalTableScan(table=[[CATALOG, SALES, EMP]])
+]]>
+        </Resource>
+    </TestCase>
+    
 </Root>

@@ -1723,6 +1723,17 @@ public class SqlToRelConverterTest extends SqlToRelTestBase {
        "${plan}");
   }
 
+  @Test
+  public void testWindowSumAggIsNotNull() throws Exception {
+    final String query = "select w_sum\n"
+            + "from (select sum (mgr) over (\n"
+            + "partition by deptno order by deptno asc nulls first) w_sum\n"
+            + "from emp)\n"
+            + "where w_sum is not null";
+    check(query, "${plan}");
+  }
+
+
   /**
    * Visitor that checks that every {@link RelNode} in a tree is valid.
    *
