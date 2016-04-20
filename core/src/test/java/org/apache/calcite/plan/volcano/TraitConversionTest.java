@@ -40,7 +40,9 @@ import java.util.List;
 import static org.apache.calcite.plan.volcano.VolcanoPlannerTest.PHYS_CALLING_CONVENTION;
 import static org.apache.calcite.plan.volcano.VolcanoPlannerTest.newCluster;
 
-/** Test for converting rel distribution */
+/**
+ * Unit test for {@link org.apache.calcite.rel.RelDistributionTraitDef}.
+ */
 public class TraitConversionTest {
 
   final ConvertRelDistributionTraitDef newTraitDefInstance = new ConvertRelDistributionTraitDef();
@@ -70,18 +72,19 @@ public class TraitConversionTest {
     RelNode result = planner.chooseDelegate().findBestExp();
   }
 
-  /** Converts a NoneSingleRel -> RandomSingleRel */
+  /**
+   * Converts a NoneSingleRel (none convention, distribution any) to RandomSingleRel
+   * (physical convention, distribution random)
+   */
   class RandomSingleTraitRule extends RelOptRule {
     RandomSingleTraitRule() {
       super(operand(NoneSingleRel.class, any()));
     }
 
-    // implement RelOptRule
     public Convention getOutConvention() {
       return PHYS_CALLING_CONVENTION;
     }
 
-    // implement RelOptRule
     public void onMatch(RelOptRuleCall call) {
       NoneSingleRel singleRel = call.rel(0);
       RelNode childRel = singleRel.getInput();
@@ -97,7 +100,9 @@ public class TraitConversionTest {
     }
   }
 
-  /** RandomSingleRel */
+  /**
+   * RandomSingleRel:  Rel with physical convention and random distribution
+   */
   class RandomSingleRel extends TestSingleRel {
     RandomSingleRel(
             RelOptCluster cluster,
@@ -108,7 +113,6 @@ public class TraitConversionTest {
          child);
     }
 
-    // implement RelNode
     public RelOptCost computeSelfCost(
             RelOptPlanner planner,
             RelMetadataQuery mq) {
@@ -121,18 +125,19 @@ public class TraitConversionTest {
     }
   }
 
-  /** Converts NoneLeafRel -> SingletonLeafRel  */
+  /**
+   * Converts NoneLeafRel (none convention, any distribution) to SingletonLeafRel
+   * (physical convention, singleton distribution)
+   */
   class SingleLeafTraitRule extends RelOptRule {
     SingleLeafTraitRule() {
       super(operand(NoneLeafRel.class, any()));
     }
 
-    // implement RelOptRule
     public Convention getOutConvention() {
       return PHYS_CALLING_CONVENTION;
     }
 
-    // implement RelOptRule
     public void onMatch(RelOptRuleCall call) {
       NoneLeafRel leafRel = call.rel(0);
       call.transformTo(
@@ -140,7 +145,9 @@ public class TraitConversionTest {
     }
   }
 
-  /** SingletonLeafRel */
+  /**
+   * SingletonLeafRel (with singleton distribution, physical convention)
+   */
   class SingletonLeafRel extends TestLeafRel {
     SingletonLeafRel(
             RelOptCluster cluster,
@@ -149,7 +156,6 @@ public class TraitConversionTest {
               .plus(simpleDistributionSingleton), label);
     }
 
-    // implement RelNode
     public RelOptCost computeSelfCost(RelOptPlanner planner,
                                       RelMetadataQuery mq) {
       return planner.getCostFactory().makeTinyCost();
@@ -160,7 +166,9 @@ public class TraitConversionTest {
     }
   }
 
-  /** Bridges the SimpleDistribution difference between SingletonLeafRel and RandomSingleRel */
+  /**
+   * Bridges the SimpleDistribution, difference between SingletonLeafRel and RandomSingleRel
+   */
   class BridgeRel extends TestSingleRel {
     BridgeRel(
             RelOptCluster cluster,
@@ -169,7 +177,6 @@ public class TraitConversionTest {
               .plus(simpleDistributionRandom), child);
     }
 
-    // implement RelNode
     public RelOptCost computeSelfCost(RelOptPlanner planner,
                                       RelMetadataQuery mq) {
       return planner.getCostFactory().makeTinyCost();
@@ -180,7 +187,9 @@ public class TraitConversionTest {
     }
   }
 
-  /** Distribution (simplified version of RelDistribution) */
+  /**
+   * Dummy distribution for test (simplified version of RelDistribution)
+   */
   public class SimpleDistribution implements RelTrait {
 
     private final String name;
@@ -212,7 +221,9 @@ public class TraitConversionTest {
     @Override public void register(RelOptPlanner planner) {}
   }
 
-  /** Handles conversion of SimpleDistribution */
+  /**
+   * Dummy distribution trait def for test (handles conversion of SimpleDistribution)
+   */
   public class ConvertRelDistributionTraitDef extends RelTraitDef<SimpleDistribution> {
 
     private ConvertRelDistributionTraitDef() {}
@@ -259,8 +270,9 @@ public class TraitConversionTest {
     }
   }
 
-
-  /** NoneLeafRel (has simple distribution of ANY) */
+  /**
+   * NoneLeafRel (any distribution and none convention)
+   */
   class NoneLeafRel extends TestLeafRel {
     protected NoneLeafRel(
             RelOptCluster cluster,
@@ -278,7 +290,9 @@ public class TraitConversionTest {
     }
   }
 
-  /** NoneSingleRel (has simple distribution of ANY) */
+  /**
+   * NoneSingleRel (any distribution and none convention)
+   */
   class NoneSingleRel extends TestSingleRel {
     protected NoneSingleRel(
             RelOptCluster cluster,
@@ -296,6 +310,5 @@ public class TraitConversionTest {
               sole(inputs));
     }
   }
-
 }
 // End TraitConversionTest.java

@@ -183,14 +183,13 @@ public abstract class RelTraitDef<T extends RelTrait> {
    * @param fromTrait the RelTrait to convert from
    * @param toTrait   the RelTrait to convert to
    * @param fromRel   the RelNode to convert from (with fromTrait)
-   * @param toRel     the RelNode to convert to (with toTrait)
    * @return true if fromTrait can be converted to toTrait
    */
   public boolean canConvert(
-          RelOptPlanner planner,
-          T fromTrait,
-          T toTrait,
-          RelNode fromRel) {
+      RelOptPlanner planner,
+      T fromTrait,
+      T toTrait,
+      RelNode fromRel) {
     return canConvert(planner, fromTrait, toTrait);
   }
 

@@ -47,7 +47,9 @@ import java.util.List;
 import static org.apache.calcite.plan.volcano.VolcanoPlannerTest.PHYS_CALLING_CONVENTION;
 import static org.apache.calcite.plan.volcano.VolcanoPlannerTest.newCluster;
 
-/** */
+/**
+ * Unit test for {@link org.apache.calcite.rel.RelCollationTraitDef}.
+ */
 public class CollationConversionTest {
 
   public TestRelCollationImpl leafCollation =
@@ -80,18 +82,18 @@ public class CollationConversionTest {
     RelNode result = planner.chooseDelegate().findBestExp();
   }
 
-  /** Converts a NoneSingleRel -> RootSingleRel */
+  /**
+   * Converts a NoneSingleRel to RootSingleRel
+   */
   class SingleNodeRule extends RelOptRule {
     SingleNodeRule() {
       super(operand(NoneSingleRel.class, any()));
     }
 
-    // implement RelOptRule
     public Convention getOutConvention() {
       return PHYS_CALLING_CONVENTION;
     }
 
-    // implement RelOptRule
     public void onMatch(RelOptRuleCall call) {
       NoneSingleRel singleRel = call.rel(0);
       RelNode childRel = singleRel.getInput();
@@ -107,7 +109,9 @@ public class CollationConversionTest {
     }
   }
 
-  /** RootSingleRel */
+  /**
+   * RootSingleRel: Root node with physical convention and rootCollation trait.
+   */
   class RootSingleRel extends TestSingleRel {
     RootSingleRel(
             RelOptCluster cluster,
@@ -118,7 +122,6 @@ public class CollationConversionTest {
               child);
     }
 
-    // implement RelNode
     public RelOptCost computeSelfCost(
             RelOptPlanner planner,
             RelMetadataQuery mq) {
@@ -131,18 +134,18 @@ public class CollationConversionTest {
     }
   }
 
-  /** Converts NoneLeafRel -> LeafRel  */
+  /**
+   * Converts a NoneLeafRel (with none convention) to LeafRel (with physical convention)
+   */
   class LeafTraitRule extends RelOptRule {
     LeafTraitRule() {
       super(operand(NoneLeafRel.class, any()));
     }
 
-    // implement RelOptRule
     public Convention getOutConvention() {
       return PHYS_CALLING_CONVENTION;
     }
 
-    // implement RelOptRule
     public void onMatch(RelOptRuleCall call) {
       NoneLeafRel leafRel = call.rel(0);
       call.transformTo(
@@ -150,7 +153,9 @@ public class CollationConversionTest {
     }
   }
 
-  /** SingletonLeafRel */
+  /**
+   * SingletonLeafRel:  leaf node with physical convention and leafCollation trait
+   */
   class LeafRel extends TestLeafRel {
     LeafRel(
             RelOptCluster cluster,
@@ -159,7 +164,6 @@ public class CollationConversionTest {
               .plus(leafCollation), label);
     }
 
-    // implement RelNode
     public RelOptCost computeSelfCost(RelOptPlanner planner,
                                       RelMetadataQuery mq) {
       return planner.getCostFactory().makeTinyCost();
@@ -170,7 +174,9 @@ public class CollationConversionTest {
     }
   }
 
-  /** NoneLeafRel (has simple distribution of ANY) */
+  /**
+   * NoneLeafRel:  leaf node with none convention and leafCollation trait
+   */
   class NoneLeafRel extends TestLeafRel {
     protected NoneLeafRel(
             RelOptCluster cluster,
@@ -188,7 +194,9 @@ public class CollationConversionTest {
     }
   }
 
-  /** NoneSingleRel (has simple distribution of ANY) */
+  /**
+   * NoneSingleRel:  a single relNode with none convention and leafCollation trait
+   */
   class NoneSingleRel extends TestSingleRel {
     protected NoneSingleRel(
             RelOptCluster cluster,
@@ -207,7 +215,9 @@ public class CollationConversionTest {
     }
   }
 
-  /** */
+  /**
+   * Dummy collation trait implementation for the test
+   */
   public class TestRelCollationImpl extends RelCollationImpl {
 
     public TestRelCollationImpl(ImmutableList<RelFieldCollation> fieldCollations) {
@@ -219,7 +229,9 @@ public class CollationConversionTest {
     }
   }
 
-  /** */
+  /**
+   * Dummy collation trait def implementation for the test (uses the PhysicalSort below)
+   */
   public class TestRelCollationTraitDef extends RelTraitDef<RelCollation> {
     public Class<RelCollation> getTraitClass() {
       return RelCollation.class;
@@ -258,7 +270,9 @@ public class CollationConversionTest {
     }
   }
 
-  /** Physical Sort RelNode */
+  /**
+   * Physical Sort RelNode (not logical)
+   */
   public class PhysicalSort extends Sort {
     public PhysicalSort(RelOptCluster cluster, RelTraitSet traits, RelNode child,
                     RelCollation collation, RexNode offset,
